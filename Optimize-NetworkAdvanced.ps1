@@ -77,29 +77,31 @@ if ($Basic -or $All) {
     Write-Host "[1] Disabling Delivery Optimization..." -ForegroundColor Yellow
     try {
         Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\DeliveryOptimization\Config" -Name "DODownloadMode" -Value 0 -Type DWord -Force
-        Write-Log "  ✓ Delivery Optimization disabled" "Green"
-    } catch { Write-Log "  ✗ Failed: $_" "Red" }
+        Write-Log "  Done: Delivery Optimization disabled" "Green"
+    } catch { Write-Log "  Failed: $_" "Red" }
 
     Write-Host "[2] Enabling OneDrive Files On-Demand..." -ForegroundColor Yellow
     try {
         if (Test-Path "HKCU:\Software\Microsoft\OneDrive") {
             Set-ItemProperty -Path "HKCU:\Software\Microsoft\OneDrive" -Name "EnableFileOnDemand" -Value 1 -Type DWord -Force
-            Write-Log "  ✓ OneDrive Files On-Demand enabled" "Green"
-        } else { Write-Log "  ⚠ OneDrive not found" "Yellow" }
-    } catch { Write-Log "  ✗ Failed: $_" "Red" }
+            Write-Log "  Done: OneDrive Files On-Demand enabled" "Green"
+        } else { 
+            Write-Log "  Warning: OneDrive not found" "Yellow" 
+        }
+    } catch { Write-Log "  Failed: $_" "Red" }
 
     Write-Host "[3] Disabling NetBIOS..." -ForegroundColor Yellow
     try {
         $adapters = Get-WmiObject Win32_NetworkAdapterConfiguration | Where-Object { $_.IPEnabled }
         foreach ($adapter in $adapters) { $adapter.SetTcpipNetbios(2) | Out-Null }
-        Write-Log "  ✓ NetBIOS disabled on $($adapters.Count) adapter(s)" "Green"
-    } catch { Write-Log "  ✗ Failed: $_" "Red" }
+        Write-Log "  Done: NetBIOS disabled on $($adapters.Count) adapter(s)" "Green"
+    } catch { Write-Log "  Failed: $_" "Red" }
 
     Write-Host "[4] Flushing DNS cache..." -ForegroundColor Yellow
     try {
         Clear-DnsClientCache
-        Write-Log "  ✓ DNS cache flushed" "Green"
-    } catch { Write-Log "  ✗ Failed: $_" "Red" }
+        Write-Log "  Done: DNS cache flushed" "Green"
+    } catch { Write-Log "  Failed: $_" "Red" }
     Write-Host ""
 }
 
@@ -111,21 +113,21 @@ if ($Services -or $All) {
     try {
         New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" -Force | Out-Null
         Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" -Name "EnableMulticast" -Value 0 -Type DWord -Force
-        Write-Log "  ✓ LLMNR disabled" "Green"
-    } catch { Write-Log "  ✗ Failed: $_" "Red" }
+        Write-Log "  Done: LLMNR disabled" "Green"
+    } catch { Write-Log "  Failed: $_" "Red" }
 
     Write-Host "[6] Disabling SSDP Discovery..." -ForegroundColor Yellow
     try {
         Stop-Service "SSDPSRV" -Force -ErrorAction SilentlyContinue
         Set-Service "SSDPSRV" -StartupType Disabled -ErrorAction Stop
-        Write-Log "  ✓ SSDP Discovery disabled" "Green"
-    } catch { Write-Log "  ✗ Failed: $_" "Red" }
+        Write-Log "  Done: SSDP Discovery disabled" "Green"
+    } catch { Write-Log "  Failed: $_" "Red" }
 
     Write-Host "[7] Disabling Teredo..." -ForegroundColor Yellow
     try {
         Set-NetTeredoConfiguration -Type Disabled -ErrorAction Stop
-        Write-Log "  ✓ Teredo disabled" "Green"
-    } catch { Write-Log "  ✗ Failed: $_" "Red" }
+        Write-Log "  Done: Teredo disabled" "Green"
+    } catch { Write-Log "  Failed: $_" "Red" }
 
     Write-Host "[8] Disabling HomeGroup services..." -ForegroundColor Yellow
     try {
@@ -136,15 +138,15 @@ if ($Services -or $All) {
                 Set-Service $svc -StartupType Disabled -ErrorAction SilentlyContinue
             }
         }
-        Write-Log "  ✓ HomeGroup services disabled" "Green"
-    } catch { Write-Log "  ✗ Failed: $_" "Red" }
+        Write-Log "  Done: HomeGroup services disabled" "Green"
+    } catch { Write-Log "  Failed: $_" "Red" }
 
     Write-Host "[9] Disabling Remote Registry..." -ForegroundColor Yellow
     try {
         Stop-Service "RemoteRegistry" -Force -ErrorAction SilentlyContinue
         Set-Service "RemoteRegistry" -StartupType Disabled -ErrorAction Stop
-        Write-Log "  ✓ Remote Registry disabled" "Green"
-    } catch { Write-Log "  ✗ Failed: $_" "Red" }
+        Write-Log "  Done: Remote Registry disabled" "Green"
+    } catch { Write-Log "  Failed: $_" "Red" }
     Write-Host ""
 }
 
@@ -156,61 +158,61 @@ if ($Performance -or $All) {
     try {
         New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile" -Force | Out-Null
         Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile" -Name "NetworkThrottlingIndex" -Value 0xffffffff -Type DWord -Force
-        Write-Log "  ✓ Network Throttling disabled" "Green"
-    } catch { Write-Log "  ✗ Failed: $_" "Red" }
+        Write-Log "  Done: Network Throttling disabled" "Green"
+    } catch { Write-Log "  Failed: $_" "Red" }
 
     Write-Host "[11] Disabling Superfetch/Sysmain..." -ForegroundColor Yellow
     try {
         Stop-Service "SysMain" -Force -ErrorAction SilentlyContinue
         Set-Service "SysMain" -StartupType Disabled -ErrorAction Stop
-        Write-Log "  ✓ Superfetch/Sysmain disabled" "Green"
-    } catch { Write-Log "  ✗ Failed: $_" "Red" }
+        Write-Log "  Done: Superfetch/Sysmain disabled" "Green"
+    } catch { Write-Log "  Failed: $_" "Red" }
 
     Write-Host "[12] Disabling Windows Search network indexing..." -ForegroundColor Yellow
     try {
         Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows Search" -Name "DisableRemovableDriveIndexing" -Value 1 -Type DWord -Force
-        Write-Log "  ✓ Windows Search network indexing disabled" "Green"
-    } catch { Write-Log "  ✗ Failed: $_" "Red" }
+        Write-Log "  Done: Windows Search network indexing disabled" "Green"
+    } catch { Write-Log "  Failed: $_" "Red" }
 
     Write-Host "[13] Disabling IPv6 (if not needed)..." -ForegroundColor Yellow
     try {
         Disable-NetAdapterBinding -Name "*" -ComponentID ms_tcpip6 -ErrorAction Stop
-        Write-Log "  ✓ IPv6 disabled" "Green"
-    } catch { Write-Log "  ✗ Failed: $_" "Red" }
+        Write-Log "  Done: IPv6 disabled" "Green"
+    } catch { Write-Log "  Failed: $_" "Red" }
     Write-Host ""
 }
 
 # PRIVACY OPTIMIZATIONS
 if ($Privacy -or $All) {
-    Write-Log "--- PRIVACY & BACKGROUND APPS ---" "Magenta"
+    Write-Log "--- PRIVACY AND BACKGROUND APPS ---" "Magenta"
     
     Write-Host "[14] Disabling Telemetry..." -ForegroundColor Yellow
     try {
         Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name "AllowTelemetry" -Value 0 -Type DWord -Force
         Stop-Service "DiagTrack" -Force -ErrorAction SilentlyContinue
         Set-Service "DiagTrack" -StartupType Disabled -ErrorAction SilentlyContinue
-        Write-Log "  ✓ Telemetry disabled" "Green"
-    } catch { Write-Log "  ✗ Failed: $_" "Red" }
+        Write-Log "  Done: Telemetry disabled" "Green"
+    } catch { Write-Log "  Failed: $_" "Red" }
 
     Write-Host "[15] Disabling Windows Tips..." -ForegroundColor Yellow
     try {
         Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent" -Name "DisableSoftLanding" -Value 1 -Type DWord -Force
-        Write-Log "  ✓ Windows Tips disabled" "Green"
-    } catch { Write-Log "  ✗ Failed: $_" "Red" }
+        Write-Log "  Done: Windows Tips disabled" "Green"
+    } catch { Write-Log "  Failed: $_" "Red" }
 
     Write-Host "[16] Disabling Microsoft Store auto-updates..." -ForegroundColor Yellow
     try {
         New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsStore" -Force | Out-Null
         Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsStore" -Name "AutoDownload" -Value 2 -Type DWord -Force
-        Write-Log "  ✓ Microsoft Store auto-updates disabled" "Green"
-    } catch { Write-Log "  ✗ Failed: $_" "Red" }
+        Write-Log "  Done: Microsoft Store auto-updates disabled" "Green"
+    } catch { Write-Log "  Failed: $_" "Red" }
 
     Write-Host "[17] Disabling Xbox Game DVR..." -ForegroundColor Yellow
     try {
         New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR" -Force | Out-Null
         Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR" -Name "AllowGameDVR" -Value 0 -Type DWord -Force
-        Write-Log "  ✓ Xbox Game DVR disabled" "Green"
-    } catch { Write-Log "  ✗ Failed: $_" "Red" }
+        Write-Log "  Done: Xbox Game DVR disabled" "Green"
+    } catch { Write-Log "  Failed: $_" "Red" }
     Write-Host ""
 }
 
