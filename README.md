@@ -36,10 +36,16 @@ Run-NetworkOptimization.bat
 
 ## Installation
 
+**IMPORTANT: Download the raw .ps1 file, not the HTML page**
+
 ```powershell
-# Clone the repository
+# Method 1: Clone the repository
 git clone https://github.com/wslabn/networkHelp.git
 cd networkHelp
+
+# Method 2: Direct download (right-click > Save As)
+# https://raw.githubusercontent.com/wslabn/networkHelp/main/Optimize-NetworkAdvanced.ps1
+# https://raw.githubusercontent.com/wslabn/networkHelp/main/Run-NetworkOptimization.bat
 
 # Run as Administrator
 .\Optimize-NetworkAdvanced.ps1 -Basic  # Quick fix (4 optimizations)
