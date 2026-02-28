@@ -14,8 +14,8 @@ Modular optimization script with 17 optimizations across 4 categories.
 
 **Usage:**
 ```powershell
-# Interactive menu (right-click > Run with PowerShell)
-.\Optimize-NetworkAdvanced.ps1
+# Interactive menu (right-click > Run as Administrator)
+Run-NetworkOptimization.bat
 
 # Or use command-line parameters
 .\Optimize-NetworkAdvanced.ps1 -All
