@@ -1,25 +1,10 @@
-# Network Optimization Scripts for Windows
+# Network Optimization Script for Windows
 
-PowerShell scripts to reduce network chattiness and improve performance on Windows systems.
+PowerShell script to reduce network chattiness and improve performance on Windows systems.
 
-## Scripts
+## Optimize-NetworkAdvanced.ps1
 
-### 1. `Optimize-NetworkChattiness.ps1`
-Basic network optimization script that performs the four most impactful fixes.
-
-**What it does:**
-- Disables Windows Update P2P (Delivery Optimization)
-- Enables OneDrive Files On-Demand
-- Disables NetBIOS over TCP/IP
-- Flushes DNS cache
-
-**Usage:**
-```powershell
-.\Optimize-NetworkChattiness.ps1
-```
-
-### 2. `Optimize-NetworkAdvanced.ps1`
-Advanced optimization script with 17 modular optimizations across 4 categories.
+Modular optimization script with 17 optimizations across 4 categories.
 
 **Categories:**
 - **Basic**: P2P, OneDrive, NetBIOS, DNS (4 optimizations)
@@ -56,14 +41,13 @@ git clone https://github.com/wslabn/networkHelp.git
 cd networkHelp
 
 # Run as Administrator
-.\Optimize-NetworkChattiness.ps1
-# or
-.\Optimize-NetworkAdvanced.ps1 -All
+.\Optimize-NetworkAdvanced.ps1 -Basic  # Quick fix (4 optimizations)
+.\Optimize-NetworkAdvanced.ps1 -All    # Full optimization (17 optimizations)
 ```
 
 ## Important Notes
 
-- **Administrator rights required**: Both scripts must be run as Administrator
+- **Administrator rights required**: Script must be run as Administrator
 - **Restart recommended**: Restart your computer after running for all changes to take effect
 - **IPv6 warning**: The Performance category disables IPv6. Skip this if you need IPv6
 - **Backup**: Consider creating a system restore point before running
