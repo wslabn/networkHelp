@@ -24,7 +24,37 @@ param(
 )
 
 if (-not ($All -or $Basic -or $Services -or $Performance -or $Privacy)) {
-    $All = $true
+    Write-Host "=== Network Optimization Menu ===" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "Select optimizations to apply:"
+    Write-Host "  1. Basic only (P2P, OneDrive, NetBIOS, DNS)"
+    Write-Host "  2. Services only (LLMNR, SSDP, Teredo, HomeGroup, Remote Registry)"
+    Write-Host "  3. Performance only (Throttling, Superfetch, Search, IPv6)"
+    Write-Host "  4. Privacy only (Telemetry, Tips, Store, Xbox)"
+    Write-Host "  5. All optimizations (Recommended)"
+    Write-Host "  6. Custom (Choose multiple categories)"
+    Write-Host ""
+    $choice = Read-Host "Enter your choice (1-6)"
+    
+    switch ($choice) {
+        "1" { $Basic = $true }
+        "2" { $Services = $true }
+        "3" { $Performance = $true }
+        "4" { $Privacy = $true }
+        "5" { $All = $true }
+        "6" {
+            Write-Host ""
+            $Basic = (Read-Host "Apply Basic? (y/n)") -eq 'y'
+            $Services = (Read-Host "Apply Services? (y/n)") -eq 'y'
+            $Performance = (Read-Host "Apply Performance? (y/n)") -eq 'y'
+            $Privacy = (Read-Host "Apply Privacy? (y/n)") -eq 'y'
+        }
+        default { 
+            Write-Host "Invalid choice. Exiting." -ForegroundColor Red
+            exit
+        }
+    }
+    Write-Host ""
 }
 
 Write-Host "=== Advanced Network Optimization Script ===" -ForegroundColor Cyan

@@ -14,10 +14,11 @@ Modular optimization script with 17 optimizations across 4 categories.
 
 **Usage:**
 ```powershell
-# Apply all optimizations
-.\Optimize-NetworkAdvanced.ps1 -All
+# Interactive menu (right-click > Run with PowerShell)
+.\Optimize-NetworkAdvanced.ps1
 
-# Apply specific categories
+# Or use command-line parameters
+.\Optimize-NetworkAdvanced.ps1 -All
 .\Optimize-NetworkAdvanced.ps1 -Basic
 .\Optimize-NetworkAdvanced.ps1 -Services
 .\Optimize-NetworkAdvanced.ps1 -Performance
